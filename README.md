@@ -2,7 +2,8 @@
 
 > 전체 투자 자산과 자산군별 비율 또는 금액을 설정하여 포트폴리오의 자산 배분 금액을 자동으로 계산해 주는 웹 도구입니다. 서버 없이 동작하는 클라이언트 사이드 단일 웹 앱(Single Web App)으로 구현되었습니다.
 
-👉 **GitHub 저장소**: [https://github.com/juanlee01/Asset-Allocation-Calculator](https://github.com/juanlee01/Asset-Allocation-Calculator)
+👉 **GitHub 저장소**: [https://github.com/juanlee01/Asset-Allocation-Calculator](https://github.com/juanlee01/Asset-Allocation-Calculator)  
+🚀 **GitHub Pages 데모**: [https://juanlee01.github.io/Asset-Allocation-Calculator/](https://juanlee01.github.io/Asset-Allocation-Calculator/)
 
 ---
 

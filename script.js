@@ -214,11 +214,42 @@ function renderResults(calculatedAssets) {
   });
 }
 
+// LocalStorage Persistence Helpers
+function saveToLocalStorage() {
+  try {
+    const data = {
+      totalAsset: totalAsset,
+      assets: assets
+    };
+    localStorage.setItem('asset_allocation_data', JSON.stringify(data));
+  } catch (e) {
+    console.error('로컬 저장소 데이터 저장에 실패했습니다.', e);
+  }
+}
+
+function loadFromLocalStorage() {
+  try {
+    const savedData = localStorage.getItem('asset_allocation_data');
+    if (savedData) {
+      const parsed = JSON.parse(savedData);
+      if (parsed.totalAsset !== undefined) {
+        totalAsset = parsed.totalAsset;
+      }
+      if (Array.isArray(parsed.assets) && parsed.assets.length > 0) {
+        assets = parsed.assets;
+      }
+    }
+  } catch (e) {
+    console.error('로컬 저장소 데이터 로드에 실패했습니다.', e);
+  }
+}
+
 // Update outputs dynamically
 function updateCalculations() {
   const calculatedAssets = calculateAllocations();
   updateStatusBanner(calculatedAssets);
   renderResults(calculatedAssets);
+  saveToLocalStorage();
 }
 
 // 6. Render Assets Input Rows (using secure DOM manipulation)
@@ -419,6 +450,7 @@ addAssetBtn.addEventListener('click', () => {
 });
 
 // Initial Setup
-totalAssetInput.value = totalAsset.toLocaleString('ko-KR');
+loadFromLocalStorage();
+totalAssetInput.value = totalAsset === 0 ? '' : totalAsset.toLocaleString('ko-KR');
 renderAssets();
 updateCalculations();

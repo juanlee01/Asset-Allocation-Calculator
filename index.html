@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>자산 배분 계산기 | Asset Allocation Calculator</title>
+  <meta name="description" content="전체 투자 자산과 자산군별 비율을 입력하여 포트폴리오 자산 배분 금액을 자동으로 계산해 주는 웹 도구입니다.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header with Title and Theme Toggle -->
+    <header>
+      <h1>자산 배분 계산기</h1>
+      <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="다크 모드 전환">
+        <span id="themeToggleIcon">☀️</span>
+        <span id="themeToggleText">라이트 모드</span>
+      </button>
+    </header>
+
+    <main class="container" style="gap: 1.5rem; padding: 0;">
+      <!-- Card 1: Total Asset Input -->
+      <section class="card" aria-labelledby="total-asset-title">
+        <h2 id="total-asset-title" class="card-title">전체 투자 자산</h2>
+        <div class="form-group">
+          <label for="totalAssetInput">총 투자 금액을 입력하세요</label>
+          <div class="input-wrapper">
+            <input 
+              id="totalAssetInput" 
+              type="text" 
+              inputmode="numeric" 
+              placeholder="0" 
+              class="total-asset-input"
+              autocomplete="off"
+            >
+            <span class="suffix">원</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Card 2: Ratio Validation Status Indicator -->
+      <section id="statusCard" class="card" style="padding: 0; border: none; box-shadow: none;" aria-live="polite">
+        <div id="statusBanner" class="status-banner status-warn">
+          <div class="status-info">
+            <span class="status-indicator-dot"></span>
+            <span id="statusMessage">자산을 추가하고 비율을 입력해 주세요.</span>
+          </div>
+          <span id="totalRatioText">현재 비율: 0%</span>
+        </div>
+      </section>
+
+      <!-- Card 3: Asset Rows Manager -->
+      <section class="card" aria-labelledby="asset-setup-title">
+        <h2 id="asset-setup-title" class="card-title">자산 항목 설정</h2>
+        <div id="assetRowsContainer" class="asset-rows-container">
+          <!-- Asset rows will be dynamically populated here by script.js -->
+        </div>
+        <button id="addAssetBtn" class="btn-secondary" type="button">
+          <span>+ 자산 추가</span>
+        </button>
+      </section>
+
+      <!-- Card 4: Results Display -->
+      <section class="card" aria-labelledby="results-title">
+        <h2 id="results-title" class="card-title">계산 결과</h2>
+        <div class="results-table-container">
+          <table class="results-table">
+            <thead>
+              <tr>
+                <th scope="col">자산</th>
+                <th scope="col" style="text-align: right;">입력값</th>
+                <th scope="col" style="text-align: center;">실제 비율</th>
+                <th scope="col" style="text-align: right;">투자 금액</th>
+              </tr>
+            </thead>
+            <tbody id="resultsTableBody">
+              <!-- Result rows will be dynamically populated here by script.js -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>© 2026 Asset Allocation Calculator. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

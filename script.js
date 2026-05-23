@@ -189,7 +189,7 @@ function renderResults(calculatedAssets) {
     if (item.mode === 'ratio') {
       valueTd.textContent = `${item.value}%`;
     } else {
-      valueTd.textContent = item.value.toLocaleString('ko-KR');
+      valueTd.textContent = `${item.value.toLocaleString('ko-KR')} 원`;
     }
 
     // Calculated actual ratio

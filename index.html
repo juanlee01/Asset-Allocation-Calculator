@@ -4,11 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>자산 배분 계산기 | Asset Allocation Calculator</title>
-  <meta name="description" content="전체 투자 자산과 자산군별 비율을 입력하여 포트폴리오 자산 배분 금액을 자동으로 계산해 주는 웹 도구입니다.">
+  <meta name="description" content="전체 투자 자산과 자산군별 비율을 입력하여 포트폴리오 자산 배분 금액을 자동으로 계산하고 리밸런싱 금액을 안내해 주는 웹 도구입니다.">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
+
     <!-- Header with Title and Theme Toggle -->
     <header>
       <h1>자산 배분 계산기</h1>
@@ -18,18 +19,31 @@
       </button>
     </header>
 
+    <!-- Mode Tab Group -->
+    <div class="mode-tab-group" role="tablist" aria-label="모드 선택">
+      <button id="tabCalculator" role="tab" class="mode-tab active"
+              aria-selected="true" aria-controls="calculatorTotalAsset">
+        💰 배분 계산기
+      </button>
+      <button id="tabRebalance" role="tab" class="mode-tab"
+              aria-selected="false" aria-controls="rebalanceOptions">
+        ⚖️ 리밸런싱
+      </button>
+    </div>
+
     <main class="container" style="gap: 1.5rem; padding: 0;">
-      <!-- Card 1: Total Asset Input -->
-      <section class="card" aria-labelledby="total-asset-title">
+
+      <!-- ── CALCULATOR MODE: Total Asset Input ─────────────────── -->
+      <section id="calculatorTotalAsset" class="card" aria-labelledby="total-asset-title">
         <h2 id="total-asset-title" class="card-title">전체 투자 자산</h2>
         <div class="form-group">
           <label for="totalAssetInput">총 투자 금액을 입력하세요</label>
           <div class="input-wrapper">
-            <input 
-              id="totalAssetInput" 
-              type="text" 
-              inputmode="numeric" 
-              placeholder="0" 
+            <input
+              id="totalAssetInput"
+              type="text"
+              inputmode="numeric"
+              placeholder="0"
               class="total-asset-input"
               autocomplete="off"
             >
@@ -38,7 +52,41 @@
         </div>
       </section>
 
-      <!-- Card 2: Ratio Validation Status Indicator -->
+      <!-- ── REBALANCE MODE: Settings ───────────────────────────── -->
+      <section id="rebalanceOptions" class="card" aria-labelledby="rebalance-options-title" hidden>
+        <h2 id="rebalance-options-title" class="card-title">리밸런싱 설정</h2>
+        <div class="form-group">
+          <label for="additionalInvestmentInput">
+            추가 투자금 <span class="label-optional">(선택)</span>
+          </label>
+          <div class="input-wrapper">
+            <input
+              id="additionalInvestmentInput"
+              type="text"
+              inputmode="numeric"
+              placeholder="0"
+              class="total-asset-input"
+              autocomplete="off"
+            >
+            <span class="suffix">원</span>
+          </div>
+        </div>
+        <div class="rebalance-strategy">
+          <label class="checkbox-label" for="allowSellCheckbox">
+            <input type="checkbox" id="allowSellCheckbox">
+            <span class="checkbox-custom" aria-hidden="true"></span>
+            <div class="checkbox-text">
+              <strong>Full Rebalance 허용</strong>
+              <span class="checkbox-desc">
+                체크 시 목표 비율 초과 자산을 매도합니다.
+                기본값은 추가 투자금만 활용합니다 (Buy-only).
+              </span>
+            </div>
+          </label>
+        </div>
+      </section>
+
+      <!-- ── SHARED: Ratio Status Banner ────────────────────────── -->
       <section id="statusCard" class="card" style="padding: 0; border: none; box-shadow: none;" aria-live="polite">
         <div id="statusBanner" class="status-banner status-warn">
           <div class="status-info">
@@ -49,19 +97,22 @@
         </div>
       </section>
 
-      <!-- Card 3: Asset Rows Manager -->
+      <!-- ── SHARED: Asset Setup ─────────────────────────────────── -->
       <section class="card" aria-labelledby="asset-setup-title">
-        <h2 id="asset-setup-title" class="card-title">자산 항목 설정</h2>
+        <h2 id="asset-setup-title" class="card-title">
+          <span>자산 항목 설정</span>
+          <span id="rebalanceColumnHint" class="column-hint" hidden>목표값 | 현재 보유 금액</span>
+        </h2>
         <div id="assetRowsContainer" class="asset-rows-container">
-          <!-- Asset rows will be dynamically populated here by script.js -->
+          <!-- Asset rows dynamically populated by script.js -->
         </div>
         <button id="addAssetBtn" class="btn-secondary" type="button">
           <span>+ 자산 추가</span>
         </button>
       </section>
 
-      <!-- Card 4: Results Display -->
-      <section class="card" aria-labelledby="results-title">
+      <!-- ── CALCULATOR MODE: Results ───────────────────────────── -->
+      <section id="calculatorResults" class="card" aria-labelledby="results-title">
         <h2 id="results-title" class="card-title">계산 결과</h2>
         <div class="results-table-container">
           <table class="results-table">
@@ -74,19 +125,54 @@
               </tr>
             </thead>
             <tbody id="resultsTableBody">
-              <!-- Result rows will be dynamically populated here by script.js -->
+              <!-- Result rows dynamically populated by script.js -->
             </tbody>
           </table>
         </div>
       </section>
+
+      <!-- ── REBALANCE MODE: Results ────────────────────────────── -->
+      <section id="rebalanceResults" class="card" aria-labelledby="rebalance-results-title" hidden>
+        <h2 id="rebalance-results-title" class="card-title">리밸런싱 결과</h2>
+        <div id="rebalanceSummary" class="rebalance-summary" aria-live="polite"></div>
+
+        <!-- Desktop: Table -->
+        <div class="results-table-container" id="rebalanceTableContainer">
+          <table class="results-table">
+            <thead>
+              <tr>
+                <th scope="col">자산</th>
+                <th scope="col" style="text-align: right;">현재 금액</th>
+                <th scope="col" style="text-align: center;">현재 비율</th>
+                <th scope="col" style="text-align: center;">목표 비율</th>
+                <th scope="col" style="text-align: right;">목표 금액</th>
+                <th scope="col" style="text-align: right;">매수 / 매도</th>
+              </tr>
+            </thead>
+            <tbody id="rebalanceTableBody">
+              <!-- Populated by script.js -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Mobile: Cards -->
+        <div id="rebalanceCardsContainer" class="rebalance-cards-container">
+          <!-- Populated by script.js -->
+        </div>
+      </section>
+
     </main>
 
     <footer class="footer">
-      <p style="margin-bottom: 0.5rem;"><span id="saveStatusText" style="font-size: 0.8rem; font-weight: 500; color: var(--text-secondary);">✓ 모든 변경사항이 브라우저에 실시간으로 자동 저장됩니다.</span></p>
+      <p style="margin-bottom: 0.5rem;">
+        <span id="saveStatusText" style="font-size: 0.8rem; font-weight: 500; color: var(--text-secondary);">
+          ✓ 모든 변경사항이 브라우저에 실시간으로 자동 저장됩니다.
+        </span>
+      </p>
       <p>© 2026 Asset Allocation Calculator. All rights reserved.</p>
     </footer>
-  </div>
 
+  </div>
   <script src="script.js"></script>
 </body>
 </html>

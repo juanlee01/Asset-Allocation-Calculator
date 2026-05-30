@@ -9,7 +9,6 @@
 </head>
 <body>
   <div class="container">
-
     <!-- Header with Title and Theme Toggle -->
     <header>
       <h1>자산 배분 계산기</h1>
@@ -32,18 +31,17 @@
     </div>
 
     <main class="container" style="gap: 1.5rem; padding: 0;">
-
       <!-- ── CALCULATOR MODE: Total Asset Input ─────────────────── -->
       <section id="calculatorTotalAsset" class="card" aria-labelledby="total-asset-title">
         <h2 id="total-asset-title" class="card-title">전체 투자 자산</h2>
         <div class="form-group">
           <label for="totalAssetInput">총 투자 금액을 입력하세요</label>
           <div class="input-wrapper">
-            <input
-              id="totalAssetInput"
-              type="text"
-              inputmode="numeric"
-              placeholder="0"
+            <input 
+              id="totalAssetInput" 
+              type="text" 
+              inputmode="numeric" 
+              placeholder="0" 
               class="total-asset-input"
               autocomplete="off"
             >
@@ -60,11 +58,11 @@
             추가 투자금 <span class="label-optional">(선택)</span>
           </label>
           <div class="input-wrapper">
-            <input
-              id="additionalInvestmentInput"
-              type="text"
-              inputmode="numeric"
-              placeholder="0"
+            <input 
+              id="additionalInvestmentInput" 
+              type="text" 
+              inputmode="numeric" 
+              placeholder="0" 
               class="total-asset-input"
               autocomplete="off"
             >
@@ -76,10 +74,10 @@
             <input type="checkbox" id="allowSellCheckbox">
             <span class="checkbox-custom" aria-hidden="true"></span>
             <div class="checkbox-text">
-              <strong>Full Rebalance 허용</strong>
+              <strong>보유 자산 매도 허용</strong>
               <span class="checkbox-desc">
-                체크 시 목표 비율 초과 자산을 매도합니다.
-                기본값은 추가 투자금만 활용합니다 (Buy-only).
+                체크 시 목표 비율 초과 자산을 매도하여 리밸런싱을 완벽하게 맞춥니다.
+                체크 해제 시 추가 투자금으로만 매수하여 비중을 맞춥니다 (Buy-only).
               </span>
             </div>
           </label>
@@ -160,7 +158,6 @@
           <!-- Populated by script.js -->
         </div>
       </section>
-
     </main>
 
     <footer class="footer">
@@ -171,7 +168,6 @@
       </p>
       <p>© 2026 Asset Allocation Calculator. All rights reserved.</p>
     </footer>
-
   </div>
   <script src="script.js"></script>
 </body>
